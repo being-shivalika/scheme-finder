@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import { Search, Heart } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="border-t border-border bg-muted/30 mt-auto">
+  return <footer className="border-t border-border bg-muted/30 mt-auto">
       <div className="container px-4 py-12">
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
@@ -48,16 +46,12 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
-            © 2024 SchemeSetu. For informational purposes only.
-          </p>
+          <p className="text-xs text-muted-foreground">© 2026 SchemeSetu. For informational purposes only.</p>
           <p className="flex items-center gap-1 text-xs text-muted-foreground">
             Made with <Heart className="h-3 w-3 text-destructive fill-destructive" /> for every Indian citizen
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
