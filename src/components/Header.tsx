@@ -23,7 +23,7 @@ const Header = () => {
             <Search className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="hidden font-display text-xl font-bold text-foreground sm:inline-block">
-            SchemesFinder
+            SchemeSetu
           </span>
         </Link>
 

@@ -13,7 +13,7 @@ const Footer = () => {
                 <Search className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="font-display text-xl font-bold text-foreground">
-                SchemesFinder
+                SchemeSetu
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
@@ -49,7 +49,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2024 SchemesFinder. For informational purposes only.
+            © 2024 SchemeSetu. For informational purposes only.
           </p>
           <p className="flex items-center gap-1 text-xs text-muted-foreground">
             Made with <Heart className="h-3 w-3 text-destructive fill-destructive" /> for every Indian citizen

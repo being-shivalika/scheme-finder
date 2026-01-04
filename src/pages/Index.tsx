@@ -96,7 +96,7 @@ const Index = () => {
           <div className="container px-4">
             <div className="text-center mb-12">
               <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-                Why Use SchemesFinder?
+                Why Use SchemeSetu?
               </h2>
               <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
                 We simplify the complex world of government schemes so you don't miss out on what you deserve.
