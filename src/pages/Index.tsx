@@ -164,14 +164,24 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-              {["Housing", "Healthcare", "Education", "Agriculture", "Business", "Insurance", "Employment", "Women & Child"].map((category) => (
-                <div 
-                  key={category}
-                  className="flex items-center gap-2 rounded-lg border border-border bg-card p-4 text-sm font-medium text-card-foreground hover:border-primary/50 hover:shadow-sm transition-all cursor-default"
+              {[
+                { name: "Housing", filter: "Housing" },
+                { name: "Healthcare", filter: "Healthcare" },
+                { name: "Education", filter: "Education" },
+                { name: "Agriculture", filter: "Agriculture" },
+                { name: "Business", filter: "Business & Entrepreneurship" },
+                { name: "Insurance", filter: "Insurance" },
+                { name: "Employment", filter: "Employment & Skills" },
+                { name: "Women & Child", filter: "Women & Child Welfare" }
+              ].map((category) => (
+                <Link 
+                  key={category.name}
+                  to={`/schemes?category=${encodeURIComponent(category.filter)}`}
+                  className="flex items-center gap-2 rounded-lg border border-border bg-card p-4 text-sm font-medium text-card-foreground hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer hover:bg-muted/50"
                 >
                   <CheckCircle2 className="h-4 w-4 text-success" />
-                  {category}
-                </div>
+                  {category.name}
+                </Link>
               ))}
             </div>
           </div>
