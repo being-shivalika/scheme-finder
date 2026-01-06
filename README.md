@@ -1,73 +1,71 @@
-# Welcome to your Lovable project
+# SchemeSetu: Bridging Citizens to Benefits
 
-## Project info
+> **Team QuantumBits** | *Hackathon Submission*
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![Project Status](https://img.shields.io/badge/Status-Prototype-orange)
+![AI Powered](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-blue)
 
-## How can I edit this code?
+## Abstract
+**SchemeSetu** (Scheme Bridge) is an AI-powered platform designed to simplify the discovery of government schemes. In a country with thousands of welfare programs, finding the right one is often complicated by bureaucratic jargon and complex eligibility criteria. SchemeSetu uses **Google Gemini 2.5 Flash** to intelligently analyze user demographics and instantly match them with the schemes they deserve.
 
-There are several ways of editing your application.
+ **[View Live Prototype](https://schemesetu-quantumbits.lovable.app/)**
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+##  The Problem
+- **Information Overload:** Citizens are overwhelmed by scattered information across multiple government portals.
+- **Complex Eligibility:** Understanding criteria like "EWS," "BPL," or specific demographic mandates is difficult for the average user.
+- **Low Discovery:** Many eligible citizens miss out on benefits simply because they don't know they qualify.
 
-Changes made via Lovable will be committed automatically to this repo.
+## The Solution
+SchemeSetu acts as an intelligent intermediary. Instead of searching for schemes, the user tells us about themselves, and our AI agent finds the matches.
 
-**Use your preferred IDE**
+### Key Features
+- **Personalized Matching:** Uses semantic reasoning to match users based on age, income, occupation, and location.
+- **Instant Results:** Powered by Gemini 2.5 Flash for low-latency, real-time responses.
+- **Simplified Explanations:** "Why am I eligible?" tags explain complex rules in simple English.
+- **Responsive Design:** Mobile-first interface built for accessibility.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+##  How It Works (AI Integration)
+We utilize **Google Gemini 2.5 Flash** not just as a search engine, but as a **reasoning engine**.
 
-Follow these steps:
+1.  **Data Capture:** The frontend collects user attributes (e.g., *21-year-old female student, rural area, <2L income*).
+2.  **Contextual Prompting:** This data is sent to Gemini with a system instruction to act as a "Government Scheme Expert."
+3.  **Logical Inference:** The model analyzes the profile against known scheme criteria. It understands nuance—for example, that a "farming family" might qualify for *PM-KISAN* even if the user didn't explicitly search for "agriculture."
+4.  **Structured Response:** The AI returns data in JSON format, allowing us to render clean, interactive UI cards.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Tech Stack
+- **Frontend:** React, Vite, Tailwind CSS
+- **UI Components:** Shadcn UI, Lucide React
+- **AI Model:** Google Gemini 2.5 Flash
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Screenshots 
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+<img width="2842" height="1350" alt="image" src="https://github.com/user-attachments/assets/2959470b-632d-4f4a-ad83-cdda2617f327" />
+<img width="2845" height="1341" alt="image" src="https://github.com/user-attachments/assets/da5c430d-3803-44e2-9d4f-5d3deae3704a" />
+<img width="2845" height="1337" alt="image" src="https://github.com/user-attachments/assets/fa76cb04-7b76-4c0f-82ac-ad75d56961cc" />
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+##  Future Roadmap
+- [ ] **Multilingual Support:** Voice-based interaction in regional languages (Hindi, Punjabi, Tamil).
+- [ ] **Secure User Data Handling:** Maintains user privacy with secure authentication and storage.
+- [ ] **Admin Management Panel:** Allows easy scheme management and system monitoring.
+- [ ] **Application Assistant:** AI agent to help fill out the actual government forms.
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+##  Team QuantumBits
+- **Navjot Singh** 
+- **Sanyam Mehta**
+- **Tarun Khurana**
+- **Shagun**
 
-## What technologies are used for this project?
+---
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+*Built with ❤️ for a better India.*
