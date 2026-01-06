@@ -56,8 +56,11 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                 type="number"
                 min={1}
                 max={120}
-                value={formData.age}
-                onChange={(e) => updateField("age", parseInt(e.target.value) || 0)}
+                value={formData.age === 0 ? "" : formData.age}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  updateField("age", value === "" ? 0 : parseInt(value, 10) || 0);
+                }}
                 className="bg-background"
                 required
               />
@@ -117,8 +120,12 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                 id="income"
                 type="number"
                 min={0}
-                value={formData.income}
-                onChange={(e) => updateField("income", parseInt(e.target.value) || 0)}
+                step={5000}
+                value={formData.income === 0 ? "" : formData.income}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  updateField("income", value === "" ? 0 : parseInt(value, 10) || 0);
+                }}
                 placeholder="e.g., 300000"
                 className="bg-background"
                 required
