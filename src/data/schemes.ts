@@ -41,7 +41,7 @@ export const governmentSchemes: Scheme[] = [
       "Priority to SC/ST families"
     ],
     benefits: "Financial assistance for construction of new house",
-    applicationLink: "https://rural.nic.in/",
+    applicationLink: "https://pmayg.nic.in/",
     ministry: "Ministry of Rural Development"
   },
   {
@@ -472,7 +472,7 @@ export const governmentSchemes: Scheme[] = [
   {
     id: "kishore-vaigyanik",
     name: "Kishore Vaigyanik Protsahan Yojana (KVPY)",
-    description: "Fellowship program to attract talented students to pursue research in basic sciences.",
+    description: "Fellowship program to attract talented students to pursue research in basic sciences. Note: Merged with INSPIRE program.",
     category: "Education",
     eligibility: [
       "Students in Class 11/12 or 1st year of B.Sc.",
@@ -480,7 +480,7 @@ export const governmentSchemes: Scheme[] = [
       "Indian citizens"
     ],
     benefits: "Monthly fellowship ₹5,000-₹7,000 plus annual contingency grant",
-    applicationLink: "http://kvpy.iisc.ernet.in/",
+    applicationLink: "https://online-inspire.gov.in/",
     ministry: "Department of Science and Technology"
   },
   {
@@ -564,7 +564,7 @@ export const governmentSchemes: Scheme[] = [
       "Minimum 50% marks"
     ],
     benefits: "₹5,000 for Class 9-10, ₹6,000 for Class 11-12 per annum",
-    applicationLink: "https://bhmnsmaef.org/",
+    applicationLink: "https://scholarships.gov.in/",
     ministry: "Ministry of Minority Affairs"
   },
   {
@@ -592,7 +592,7 @@ export const governmentSchemes: Scheme[] = [
       "Age limit as per exam criteria"
     ],
     benefits: "Free coaching, study material, and stipend for stay",
-    applicationLink: "https://socialjustice.gov.in/",
+    applicationLink: "https://socialjustice.gov.in/schemes/10",
     ministry: "Ministry of Social Justice and Empowerment"
   },
   {
@@ -1199,7 +1199,7 @@ export const governmentSchemes: Scheme[] = [
       "15-year maturity period"
     ],
     benefits: "7.1% interest rate (2024), tax-free returns, loan facility",
-    applicationLink: "https://www.india.gov.in/",
+    applicationLink: "https://www.nsiindia.gov.in/InternalPage.aspx?Id_Pk=89",
     ministry: "Ministry of Finance"
   },
   {
@@ -1299,7 +1299,7 @@ export const governmentSchemes: Scheme[] = [
       "Indian resident"
     ],
     benefits: "Interest rate of 8.2% (2024), tax-free returns, maturity after 21 years",
-    applicationLink: "https://www.india.gov.in/sukanya-samriddhi-yojna",
+    applicationLink: "https://www.nsiindia.gov.in/InternalPage.aspx?Id_Pk=88",
     ministry: "Ministry of Finance"
   },
   {
@@ -1327,7 +1327,7 @@ export const governmentSchemes: Scheme[] = [
       "All age groups"
     ],
     benefits: "One-stop centers, helplines, shelter homes, economic support",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/mission-shakti",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1341,7 +1341,7 @@ export const governmentSchemes: Scheme[] = [
       "Women in distress"
     ],
     benefits: "Rescue operations, safe shelter, rehabilitation, reintegration support",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/ujjwala-comprehensive-scheme-prevention-trafficking-and-rescue-rehabilitation-and-re",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1355,7 +1355,7 @@ export const governmentSchemes: Scheme[] = [
       "Natural disaster affected women"
     ],
     benefits: "Temporary shelter up to 3 years, skill training, rehabilitation",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/swadhar-greh",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1369,7 +1369,7 @@ export const governmentSchemes: Scheme[] = [
       "Monthly income up to ₹50,000"
     ],
     benefits: "Subsidized hostel accommodation, day care for children",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/working-women-hostel",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1383,7 +1383,7 @@ export const governmentSchemes: Scheme[] = [
       "No formal education required"
     ],
     benefits: "Free skill training, entrepreneurship development, placement support",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/step-support-training-and-employment-programme-women",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1397,7 +1397,7 @@ export const governmentSchemes: Scheme[] = [
       "Women in distress"
     ],
     benefits: "Medical, legal, psychological support, temporary shelter, police assistance",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/one-stop-centre-scheme-1",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1411,7 +1411,7 @@ export const governmentSchemes: Scheme[] = [
       "Pan-India coverage"
     ],
     benefits: "Emergency response, counseling, police and medical referral",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/womens-helpline",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1425,7 +1425,7 @@ export const governmentSchemes: Scheme[] = [
       "Adolescent girls"
     ],
     benefits: "Supplementary nutrition, immunization, health checkup, pre-school education",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/icds-scheme",
     ministry: "Ministry of Women and Child Development"
   },
   {
@@ -1695,7 +1695,7 @@ export const governmentSchemes: Scheme[] = [
       "Family income below ₹6 lakhs per annum"
     ],
     benefits: "Free skill training, stipend during training, 75% placement target",
-    applicationLink: "https://minorityaffairs.gov.in/",
+    applicationLink: "https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=552&lid=505",
     ministry: "Ministry of Minority Affairs"
   },
   {
@@ -1709,7 +1709,7 @@ export const governmentSchemes: Scheme[] = [
       "Priority to BPL families"
     ],
     benefits: "Leadership training, exposure visits, knowledge about rights and schemes",
-    applicationLink: "https://minorityaffairs.gov.in/",
+    applicationLink: "https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=551&lid=504",
     ministry: "Ministry of Minority Affairs"
   },
   {
@@ -1723,7 +1723,7 @@ export const governmentSchemes: Scheme[] = [
       "Youth interested in traditional crafts"
     ],
     benefits: "Skill training, market linkage, certification, toolkits",
-    applicationLink: "https://minorityaffairs.gov.in/",
+    applicationLink: "https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=550&lid=503",
     ministry: "Ministry of Minority Affairs"
   },
   {
@@ -1795,7 +1795,7 @@ export const governmentSchemes: Scheme[] = [
       "Indian citizen"
     ],
     benefits: "Free aids and appliances like hearing aids, wheelchairs, prosthetics, crutches",
-    applicationLink: "https://www.disabilityaffairs.gov.in/",
+    applicationLink: "https://disabilityaffairs.gov.in/content/page/adip.php",
     ministry: "Ministry of Social Justice and Empowerment"
   },
   {
@@ -1809,7 +1809,7 @@ export const governmentSchemes: Scheme[] = [
       "Various types of disabilities covered"
     ],
     benefits: "Special education, vocational training, therapy, day care centers",
-    applicationLink: "https://www.disabilityaffairs.gov.in/",
+    applicationLink: "https://disabilityaffairs.gov.in/content/page/ddrs.php",
     ministry: "Ministry of Social Justice and Empowerment"
   },
   {
@@ -1851,7 +1851,7 @@ export const governmentSchemes: Scheme[] = [
       "Pan-India coverage"
     ],
     benefits: "Ramps, accessible toilets, sign boards, accessible websites",
-    applicationLink: "https://accessibleindia.gov.in/",
+    applicationLink: "https://disabilityaffairs.gov.in/content/page/accessible-india-campaign.php",
     ministry: "Ministry of Social Justice and Empowerment"
   },
   {
@@ -2339,7 +2339,7 @@ export const governmentSchemes: Scheme[] = [
       "Focus on forest dwellers"
     ],
     benefits: "Livelihood, health, education, connectivity, housing support",
-    applicationLink: "https://tribal.nic.in/",
+    applicationLink: "https://tribal.nic.in/schemes.aspx",
     ministry: "Ministry of Tribal Affairs"
   },
   {
@@ -2397,7 +2397,7 @@ export const governmentSchemes: Scheme[] = [
       "Secured admission in recognized institution"
     ],
     benefits: "100% interest subsidy during moratorium period",
-    applicationLink: "https://www.minorityaffairs.gov.in/",
+    applicationLink: "https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=548&lid=501",
     ministry: "Ministry of Minority Affairs"
   },
   {
@@ -2411,7 +2411,7 @@ export const governmentSchemes: Scheme[] = [
       "Indian citizens"
     ],
     benefits: "Financial assistance for fertility treatments, medical support",
-    applicationLink: "https://www.minorityaffairs.gov.in/",
+    applicationLink: "https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=564&lid=515",
     ministry: "Ministry of Minority Affairs"
   },
 
@@ -2571,7 +2571,7 @@ export const governmentSchemes: Scheme[] = [
       "Community participation"
     ],
     benefits: "Afforestation, restoration of degraded forests, agroforestry",
-    applicationLink: "https://moef.gov.in/",
+    applicationLink: "https://moef.gov.in/en/division/forest-divisions/green-india-mission/",
     ministry: "Ministry of Environment, Forest and Climate Change"
   }
 ];
