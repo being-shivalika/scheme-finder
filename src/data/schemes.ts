@@ -1458,7 +1458,7 @@ export const governmentSchemes: Scheme[] = [
   },
   {
     id: "child-protection",
-    name: "Integrated Child Protection Scheme",
+    name: "Integrated Child Protection Scheme (Mission Vatsalya)",
     description: "Safe and secure environment for overall development of children in need of care.",
     category: "Women & Child Welfare",
     eligibility: [
@@ -1467,13 +1467,13 @@ export const governmentSchemes: Scheme[] = [
       "Orphaned, abandoned, trafficked children"
     ],
     benefits: "Shelter homes, institutional and non-institutional care, adoption services",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/mission-vatsalya",
     ministry: "Ministry of Women and Child Development"
   },
   {
     id: "sabla",
-    name: "SABLA (Rajiv Gandhi Scheme for Adolescent Girls)",
-    description: "Empowerment of adolescent girls (11-18 years) through nutrition and life skills.",
+    name: "Scheme for Adolescent Girls (SAG)",
+    description: "Empowerment of adolescent girls (11-18 years) through nutrition and life skills. Previously known as SABLA/Rajiv Gandhi Scheme.",
     category: "Women & Child Welfare",
     eligibility: [
       "Adolescent girls 11-18 years",
@@ -1481,7 +1481,7 @@ export const governmentSchemes: Scheme[] = [
       "All economic backgrounds"
     ],
     benefits: "Nutrition, health, hygiene education, life skills, vocational training",
-    applicationLink: "https://wcd.nic.in/",
+    applicationLink: "https://wcd.nic.in/schemes/scheme-adolescent-girls",
     ministry: "Ministry of Women and Child Development"
   },
   {
