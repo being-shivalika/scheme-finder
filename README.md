@@ -60,12 +60,4 @@ We utilize **Google Gemini 2.5 Flash** not just as a search engine, but as a **r
 
 ---
 
-##  Team QuantumBits
-- **Navjot Singh** 
-- **Sanyam Mehta**
-- **Tarun Khurana**
-- **Shagun**
-
----
-
 *Built with ❤️ for a better India.*
