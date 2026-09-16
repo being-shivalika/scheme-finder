@@ -8,12 +8,15 @@ import profileRoutes from './routes/profiles.js';
 import schemeRoutes from './routes/schemes.js';
 import adminRoutes from './routes/admin.js';
 
-// Connect to Database
-connectDB();
-
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Ensure DB is connected before every request
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
