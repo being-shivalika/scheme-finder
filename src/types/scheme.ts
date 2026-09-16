@@ -6,6 +6,7 @@ export interface UserProfile {
   income: number;
   occupation: string;
   education: string;
+  degree?: string;
   isDisabled: boolean;
   isMinority: boolean;
   isBPL: boolean;

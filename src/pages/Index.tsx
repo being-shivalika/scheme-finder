@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight, Search, Shield, Zap, Users, TrendingUp, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const { t } = useLanguage();
   const stats = [
-    { value: "500+", label: "Central & State Schemes" },
+    { value: "180+", label: "Central & State Schemes" },
     { value: "₹10L+", label: "Potential Benefits" },
     { value: "Free", label: "Eligibility Check" },
   ];
@@ -51,29 +53,28 @@ const Index = () => {
             <div className="mx-auto max-w-3xl text-center animate-fade-in">
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 mb-6">
                 <TrendingUp className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Powered by Google Gemini AI</span>
+                <span className="text-sm font-medium text-primary">{t("hero.powered")}</span>
               </div>
               
               <h1 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
-                Discover Government Schemes
-                <span className="text-gradient block mt-2">You Deserve</span>
+                {t("hero.title1")}
+                <span className="text-gradient block mt-2">{t("hero.title2")}</span>
               </h1>
               
               <p className="mt-6 text-lg text-muted-foreground md:text-xl max-w-2xl mx-auto">
-                Millions of Indians miss out on government benefits simply because they don't know about them. 
-                Find schemes tailored to your profile in minutes.
+                {t("hero.desc")}
               </p>
               
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link to="/find-schemes">
                   <Button variant="hero" size="xl" className="group">
-                    Check Your Eligibility
+                    {t("hero.cta.check")}
                     <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </Link>
                 <Link to="/schemes">
                   <Button variant="outline" size="xl">
-                    Browse All Schemes
+                    {t("hero.cta.browse")}
                   </Button>
                 </Link>
               </div>

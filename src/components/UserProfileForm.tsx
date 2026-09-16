@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Checkbox } from "./ui/checkbox";
 import { indianStates } from "@/data/schemes";
 import { Sparkles, Loader2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface UserProfileFormProps {
   onSubmit: (profile: UserProfile) => void;
@@ -15,6 +16,7 @@ interface UserProfileFormProps {
 }
 
 const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<UserProfile>({
     age: 25,
     gender: "",
@@ -40,9 +42,9 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-elegant border-border">
       <CardHeader className="text-center pb-2">
-        <CardTitle className="font-display text-2xl">Tell Us About Yourself</CardTitle>
+        <CardTitle className="font-display text-2xl">{t("form.title")}</CardTitle>
         <CardDescription className="text-base">
-          Enter your details to find government schemes you may be eligible for
+          {t("form.desc")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -50,7 +52,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
           <div className="grid gap-6 sm:grid-cols-2">
             {/* Age */}
             <div className="space-y-2">
-              <Label htmlFor="age">Age (years)</Label>
+              <Label htmlFor="age">{t("form.age")}</Label>
               <Input
                 id="age"
                 type="number"
@@ -68,7 +70,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
 
             {/* Gender */}
             <div className="space-y-2">
-              <Label htmlFor="gender">Gender</Label>
+              <Label htmlFor="gender">{t("form.gender")}</Label>
               <Select value={formData.gender} onValueChange={(v) => updateField("gender", v)}>
                 <SelectTrigger className="bg-background">
                   <SelectValue placeholder="Select gender" />
@@ -83,7 +85,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
 
             {/* State */}
             <div className="space-y-2">
-              <Label htmlFor="state">State / UT</Label>
+              <Label htmlFor="state">{t("form.state")}</Label>
               <Select value={formData.state} onValueChange={(v) => updateField("state", v)}>
                 <SelectTrigger className="bg-background">
                   <SelectValue placeholder="Select state" />
@@ -98,7 +100,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
 
             {/* Category */}
             <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category">{t("form.category")}</Label>
               <Select value={formData.category} onValueChange={(v) => updateField("category", v)}>
                 <SelectTrigger className="bg-background">
                   <SelectValue placeholder="Select category" />
@@ -115,7 +117,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
 
             {/* Annual Income */}
             <div className="space-y-2">
-              <Label htmlFor="income">Annual Family Income (₹)</Label>
+              <Label htmlFor="income">{t("form.income")}</Label>
               <Input
                 id="income"
                 type="number"
@@ -134,7 +136,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
 
             {/* Occupation */}
             <div className="space-y-2">
-              <Label htmlFor="occupation">Occupation</Label>
+              <Label htmlFor="occupation">{t("form.occupation")}</Label>
               <Select value={formData.occupation} onValueChange={(v) => updateField("occupation", v)}>
                 <SelectTrigger className="bg-background">
                   <SelectValue placeholder="Select occupation" />
@@ -154,8 +156,8 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
             </div>
 
             {/* Education */}
-            <div className="space-y-2 sm:col-span-2">
-              <Label htmlFor="education">Highest Education</Label>
+            <div className="space-y-2 sm:col-span-1">
+              <Label htmlFor="education">{t("form.education")}</Label>
               <Select value={formData.education} onValueChange={(v) => updateField("education", v)}>
                 <SelectTrigger className="bg-background">
                   <SelectValue placeholder="Select education level" />
@@ -173,11 +175,24 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Degree */}
+            <div className="space-y-2 sm:col-span-1">
+              <Label htmlFor="degree">{t("form.degree")}</Label>
+              <Input
+                id="degree"
+                type="text"
+                value={formData.degree || ""}
+                onChange={(e) => updateField("degree", e.target.value)}
+                placeholder="e.g. B.Tech, MBBS, B.A."
+                className="bg-background"
+              />
+            </div>
           </div>
 
           {/* Checkboxes */}
           <div className="space-y-4 rounded-lg border border-border bg-muted/30 p-4">
-            <p className="text-sm font-medium text-foreground">Additional Information</p>
+            <p className="text-sm font-medium text-foreground">{t("form.additional")}</p>
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -186,7 +201,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                   onCheckedChange={(checked) => updateField("isDisabled", !!checked)}
                 />
                 <Label htmlFor="disabled" className="text-sm font-normal cursor-pointer">
-                  Person with Disability
+                  {t("form.disabled")}
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -196,7 +211,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                   onCheckedChange={(checked) => updateField("isMinority", !!checked)}
                 />
                 <Label htmlFor="minority" className="text-sm font-normal cursor-pointer">
-                  Minority Community
+                  {t("form.minority")}
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -206,7 +221,7 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                   onCheckedChange={(checked) => updateField("isBPL", !!checked)}
                 />
                 <Label htmlFor="bpl" className="text-sm font-normal cursor-pointer">
-                  Below Poverty Line (BPL)
+                  {t("form.bpl")}
                 </Label>
               </div>
             </div>
@@ -216,12 +231,12 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Finding Your Schemes...
+                {t("form.loading")}
               </>
             ) : (
               <>
                 <Sparkles className="mr-2 h-5 w-5" />
-                Find Matching Schemes
+                {t("form.submit")}
               </>
             )}
           </Button>

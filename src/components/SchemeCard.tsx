@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 interface SchemeCardProps {
   scheme: Scheme;
   showMatchScore?: boolean;
+  status?: 'matched' | 'saved' | 'applied';
+  onSave?: (schemeId: string) => void;
+  onApply?: (schemeId: string) => void;
 }
 
 const getCategoryColor = (category: string) => {
@@ -28,7 +31,7 @@ const getCategoryColor = (category: string) => {
   return colors[category] || "bg-muted text-muted-foreground";
 };
 
-const SchemeCard = ({ scheme, showMatchScore = false }: SchemeCardProps) => {
+const SchemeCard = ({ scheme, showMatchScore = false, status = 'matched', onSave, onApply }: SchemeCardProps) => {
   const matchScore = scheme.eligibilityScore || 0;
   
   return (
@@ -84,15 +87,32 @@ const SchemeCard = ({ scheme, showMatchScore = false }: SchemeCardProps) => {
         </div>
       </CardContent>
       
-      <CardFooter className="pt-4">
+      <CardFooter className="pt-4 flex flex-col gap-2">
         {scheme.applicationLink && (
           <Button asChild variant="default" className="w-full" size="sm">
             <a href={scheme.applicationLink} target="_blank" rel="noopener noreferrer">
-              Apply Now
+              Go to Portal
               <ExternalLink className="ml-2 h-4 w-4" />
             </a>
           </Button>
         )}
+        <div className="flex gap-2 w-full">
+          {status !== 'saved' && status !== 'applied' && onSave && (
+            <Button variant="outline" size="sm" className="w-full" onClick={() => onSave(scheme.id)}>
+              Save for later
+            </Button>
+          )}
+          {status !== 'applied' && onApply && (
+            <Button variant="secondary" size="sm" className="w-full" onClick={() => onApply(scheme.id)}>
+              Mark as Applied
+            </Button>
+          )}
+          {status === 'applied' && (
+            <div className="w-full text-center text-sm font-medium text-success bg-success/10 py-1.5 rounded-md">
+              ✓ Applied
+            </div>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );

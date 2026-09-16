@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, Heart } from "lucide-react";
+import { Search, Heart, Shield } from "lucide-react";
 const Footer = () => {
   return <footer className="border-t border-border bg-muted/30 mt-auto">
       <div className="container px-4 py-12">
@@ -31,6 +31,21 @@ const Footer = () => {
               <li>
                 <Link to="/find-schemes" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Check Eligibility
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                  <Shield className="h-3 w-3" /> Admin Dashboard
                 </Link>
               </li>
             </ul>

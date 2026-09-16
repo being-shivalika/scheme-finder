@@ -1,17 +1,22 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Search, Menu, X } from "lucide-react";
+import { Search, Menu, X, Globe } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+  const { session, signOut } = useAuth();
 
   const navLinks = [
-    { path: "/", label: "Home" },
-    { path: "/schemes", label: "Browse Schemes" },
-    { path: "/find-schemes", label: "Find Your Schemes" },
+    { path: "/", label: t("nav.home") },
+    { path: "/schemes", label: t("nav.browse") },
+    { path: "/find-schemes", label: t("nav.find") },
+    { path: "/for-you", label: t("nav.foryou") },
   ];
 
   return (
@@ -45,11 +50,35 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* CTA Button */}
-        <div className="hidden md:block">
+        {/* CTA Button and Language Toggle */}
+        <div className="hidden md:flex md:items-center md:gap-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
+            title="Toggle Language (English/Hindi)"
+            className="rounded-full"
+          >
+            <Globe className="h-5 w-5" />
+            <span className="sr-only">Toggle Language</span>
+            <span className="ml-1 text-xs font-bold uppercase">{language}</span>
+          </Button>
+
+          {session ? (
+            <Button variant="outline" size="sm" onClick={() => signOut()}>
+              Logout
+            </Button>
+          ) : (
+            <Link to="/login">
+              <Button variant="outline" size="sm">
+                Sign In
+              </Button>
+            </Link>
+          )}
+
           <Link to="/find-schemes">
             <Button variant="hero" size="sm">
-              Check Eligibility
+              {t("nav.check")}
             </Button>
           </Link>
         </div>
