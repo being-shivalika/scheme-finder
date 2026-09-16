@@ -84,6 +84,20 @@ const ForYou = () => {
     }
     
     try {
+      // Optimistic update
+      const allSchemes = [...recommended, ...saved, ...applied];
+      const targetScheme = allSchemes.find(s => s.id === schemeId);
+      
+      if (targetScheme) {
+        const updatedScheme = { ...targetScheme, _status: newStatus };
+        const newAll = allSchemes.filter(s => s.id !== schemeId);
+        newAll.push(updatedScheme);
+        
+        setRecommended(newAll.filter((s: any) => s._status === 'matched').sort((a: any, b: any) => b.eligibilityScore - a.eligibilityScore));
+        setSaved(newAll.filter((s: any) => s._status === 'saved'));
+        setApplied(newAll.filter((s: any) => s._status === 'applied'));
+      }
+
       const response = await fetch(`/api/user-schemes/${schemeId}`, {
         method: 'PUT',
         headers: {
@@ -93,9 +107,11 @@ const ForYou = () => {
         body: JSON.stringify({ status: newStatus })
       });
         
-      if (!response.ok) throw new Error("Failed to update status");
-      
-      fetchDashboardData();
+      if (!response.ok) {
+        // Revert on failure
+        fetchDashboardData();
+        throw new Error("Failed to update status");
+      }
       
       let message = "";
       if (newStatus === "saved") message = "Scheme saved to your profile.";
