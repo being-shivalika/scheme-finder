@@ -94,13 +94,44 @@ router.get('/', authenticateToken, async (req, res) => {
 router.put('/:schemeId', authenticateToken, validateBody(statusBodySchema), async (req, res) => {
   try {
     const { status } = req.body;
-    const scheme = await UserScheme.findOneAndUpdate(
-      { userId: req.user.id, schemeId: req.params.schemeId },
-      { status },
+    const schemeId = decodeURIComponent(req.params.schemeId || '').trim();
+    if (!schemeId) return res.status(400).json({ error: 'Missing scheme id' });
+
+    const userId = req.user.id;
+
+    let scheme = await UserScheme.findOneAndUpdate(
+      { userId, schemeId },
+      { $set: { status } },
       { new: true, runValidators: true }
     );
-    if (!scheme) return res.status(404).json({ error: 'Scheme not found' });
-    res.json(scheme);
+    if (scheme) return res.json(scheme);
+
+    const allSchemes = await getAllSchemes();
+    const catalogScheme = allSchemes.find((s) => String(s?.id) === schemeId);
+    if (!catalogScheme) {
+      return res.status(404).json({ error: 'Scheme not found', schemeId });
+    }
+
+    try {
+      scheme = await UserScheme.create({
+        userId,
+        schemeId,
+        status,
+        schemeData: catalogScheme,
+      });
+    } catch (err) {
+      if (err?.code === 11000) {
+        scheme = await UserScheme.findOneAndUpdate(
+          { userId, schemeId },
+          { $set: { status, schemeData: catalogScheme } },
+          { new: true, runValidators: true }
+        );
+      } else {
+        throw err;
+      }
+    }
+
+    return res.json(scheme);
   } catch (error) {
     return safeError(res, 500, 'Failed to update status', error);
   }

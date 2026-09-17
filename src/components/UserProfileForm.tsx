@@ -3,17 +3,30 @@ import { UserProfile } from "@/types/scheme";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Checkbox } from "./ui/checkbox";
 import { indianStates } from "@/data/schemes";
-import { Sparkles, Loader2 } from "lucide-react";
+import {
+  ListChecks,
+  Loader2,
+  User,
+  MapPin,
+  Briefcase,
+  GraduationCap,
+  IndianRupee,
+  Accessibility,
+  Users,
+  CircleDollarSign,
+} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 interface UserProfileFormProps {
   onSubmit: (profile: UserProfile) => void;
   isLoading: boolean;
 }
+
+const fieldClass =
+  "h-11 rounded-xl border-white/10 bg-white/[0.04] text-quartz placeholder:text-slate focus:border-aurora/50 focus:ring-aurora/30";
 
 const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
   const { t } = useLanguage();
@@ -36,23 +49,81 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
   };
 
   const updateField = <K extends keyof UserProfile>(field: K, value: UserProfile[K]) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const filledCount = [
+    formData.age,
+    formData.gender,
+    formData.state,
+    formData.category,
+    formData.income,
+    formData.occupation,
+    formData.education,
+  ].filter(Boolean).length;
+  const progress = Math.round((filledCount / 7) * 100);
+
+  const chips = [
+    {
+      id: "disabled",
+      label: t("form.disabled"),
+      icon: Accessibility,
+      active: !!formData.isDisabled,
+      onToggle: () => updateField("isDisabled", !formData.isDisabled),
+    },
+    {
+      id: "minority",
+      label: t("form.minority"),
+      icon: Users,
+      active: !!formData.isMinority,
+      onToggle: () => updateField("isMinority", !formData.isMinority),
+    },
+    {
+      id: "bpl",
+      label: t("form.bpl"),
+      icon: CircleDollarSign,
+      active: !!formData.isBPL,
+      onToggle: () => updateField("isBPL", !formData.isBPL),
+    },
+  ];
+
   return (
-    <Card className="w-full max-w-2xl mx-auto shadow-elegant border-border">
-      <CardHeader className="text-center pb-2">
-        <CardTitle className="font-display text-2xl">{t("form.title")}</CardTitle>
-        <CardDescription className="text-base">
-          {t("form.desc")}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            {/* Age */}
+    <div className="mx-auto w-full max-w-2xl">
+      <div className="mb-8 text-center">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-aurora/30 bg-aurora/10 shadow-[0_0_40px_rgba(98,95,255,0.25)]">
+          <ListChecks className="h-5 w-5 text-lilac" />
+        </div>
+        <h2 className="font-display text-[28px] font-medium tracking-tight text-quartz md:text-[32px]">
+          {t("form.title")}
+        </h2>
+        <p className="mt-2 text-[15px] font-light text-ash">{t("form.desc")}</p>
+
+        <div className="mx-auto mt-6 max-w-xs">
+          <div className="mb-1.5 flex justify-between text-[11px] font-medium uppercase tracking-wider text-ash">
+            <span>Profile completeness</span>
+            <span className="text-lilac">{progress}%</span>
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-[linear-gradient(90deg,#305fbd,#625fff,#ff9ffc)] transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Basics */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-ash">
+            <User className="h-3.5 w-3.5 text-signal" />
+            Basics
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="age">{t("form.age")}</Label>
+              <Label htmlFor="age" className="text-mist">
+                {t("form.age")}
+              </Label>
               <Input
                 id="age"
                 type="number"
@@ -63,16 +134,14 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                   const value = e.target.value;
                   updateField("age", value === "" ? 0 : parseInt(value, 10) || 0);
                 }}
-                className="bg-background"
+                className={fieldClass}
                 required
               />
             </div>
-
-            {/* Gender */}
             <div className="space-y-2">
-              <Label htmlFor="gender">{t("form.gender")}</Label>
+              <Label className="text-mist">{t("form.gender")}</Label>
               <Select value={formData.gender} onValueChange={(v) => updateField("gender", v)}>
-                <SelectTrigger className="bg-background">
+                <SelectTrigger className={fieldClass}>
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
@@ -82,27 +151,35 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </section>
 
-            {/* State */}
+        {/* Location & category */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-ash">
+            <MapPin className="h-3.5 w-3.5 text-signal" />
+            Location & category
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="state">{t("form.state")}</Label>
+              <Label className="text-mist">{t("form.state")}</Label>
               <Select value={formData.state} onValueChange={(v) => updateField("state", v)}>
-                <SelectTrigger className="bg-background">
+                <SelectTrigger className={fieldClass}>
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
                   {indianStates.map((state) => (
-                    <SelectItem key={state} value={state}>{state}</SelectItem>
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Category */}
             <div className="space-y-2">
-              <Label htmlFor="category">{t("form.category")}</Label>
+              <Label className="text-mist">{t("form.category")}</Label>
               <Select value={formData.category} onValueChange={(v) => updateField("category", v)}>
-                <SelectTrigger className="bg-background">
+                <SelectTrigger className={fieldClass}>
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -114,31 +191,42 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </section>
 
-            {/* Annual Income */}
+        {/* Work & income */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-ash">
+            <Briefcase className="h-3.5 w-3.5 text-signal" />
+            Work & income
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="income">{t("form.income")}</Label>
-              <Input
-                id="income"
-                type="number"
-                min={0}
-                step={5000}
-                value={formData.income === 0 ? "" : formData.income}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  updateField("income", value === "" ? 0 : parseInt(value, 10) || 0);
-                }}
-                placeholder="e.g., 300000"
-                className="bg-background"
-                required
-              />
+              <Label htmlFor="income" className="text-mist">
+                {t("form.income")}
+              </Label>
+              <div className="relative">
+                <IndianRupee className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ash" />
+                <Input
+                  id="income"
+                  type="number"
+                  min={0}
+                  step={5000}
+                  value={formData.income === 0 ? "" : formData.income}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    updateField("income", value === "" ? 0 : parseInt(value, 10) || 0);
+                  }}
+                  placeholder="e.g., 300000"
+                  className={cn(fieldClass, "pl-9")}
+                  required
+                />
+              </div>
             </div>
-
-            {/* Occupation */}
             <div className="space-y-2">
-              <Label htmlFor="occupation">{t("form.occupation")}</Label>
+              <Label className="text-mist">{t("form.occupation")}</Label>
               <Select value={formData.occupation} onValueChange={(v) => updateField("occupation", v)}>
-                <SelectTrigger className="bg-background">
+                <SelectTrigger className={fieldClass}>
                   <SelectValue placeholder="Select occupation" />
                 </SelectTrigger>
                 <SelectContent>
@@ -154,12 +242,20 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </section>
 
-            {/* Education */}
-            <div className="space-y-2 sm:col-span-1">
-              <Label htmlFor="education">{t("form.education")}</Label>
+        {/* Education */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-ash">
+            <GraduationCap className="h-3.5 w-3.5 text-signal" />
+            Education
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label className="text-mist">{t("form.education")}</Label>
               <Select value={formData.education} onValueChange={(v) => updateField("education", v)}>
-                <SelectTrigger className="bg-background">
+                <SelectTrigger className={fieldClass}>
                   <SelectValue placeholder="Select education level" />
                 </SelectTrigger>
                 <SelectContent>
@@ -171,78 +267,74 @@ const UserProfileForm = ({ onSubmit, isLoading }: UserProfileFormProps) => {
                   <SelectItem value="diploma">Diploma / ITI</SelectItem>
                   <SelectItem value="graduate">Graduate</SelectItem>
                   <SelectItem value="post-graduate">Post Graduate</SelectItem>
-                  <SelectItem value="professional">Professional Degree (Doctor, Engineer, etc.)</SelectItem>
+                  <SelectItem value="professional">Professional Degree</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Degree */}
-            <div className="space-y-2 sm:col-span-1">
-              <Label htmlFor="degree">{t("form.degree")}</Label>
+            <div className="space-y-2">
+              <Label htmlFor="degree" className="text-mist">
+                {t("form.degree")}
+              </Label>
               <Input
                 id="degree"
                 type="text"
                 value={formData.degree || ""}
                 onChange={(e) => updateField("degree", e.target.value)}
                 placeholder="e.g. B.Tech, MBBS, B.A."
-                className="bg-background"
+                className={fieldClass}
               />
             </div>
           </div>
+        </section>
 
-          {/* Checkboxes */}
-          <div className="space-y-4 rounded-lg border border-border bg-muted/30 p-4">
-            <p className="text-sm font-medium text-foreground">{t("form.additional")}</p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="disabled"
-                  checked={formData.isDisabled}
-                  onCheckedChange={(checked) => updateField("isDisabled", !!checked)}
+        {/* Toggles */}
+        <section className="space-y-3">
+          <p className="text-[12px] font-medium uppercase tracking-[0.08em] text-ash">
+            {t("form.additional")}
+          </p>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {chips.map((chip) => (
+              <button
+                key={chip.id}
+                type="button"
+                onClick={chip.onToggle}
+                className={cn(
+                  "flex items-center gap-2 rounded-xl border px-3 py-3 text-left text-[13px] transition-all",
+                  chip.active
+                    ? "border-aurora/50 bg-aurora/15 text-quartz shadow-[0_0_24px_rgba(98,95,255,0.2)]"
+                    : "border-white/10 bg-white/[0.03] text-mist hover:border-white/20 hover:text-quartz"
+                )}
+              >
+                <chip.icon
+                  className={cn("h-4 w-4 shrink-0", chip.active ? "text-lilac" : "text-ash")}
                 />
-                <Label htmlFor="disabled" className="text-sm font-normal cursor-pointer">
-                  {t("form.disabled")}
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="minority"
-                  checked={formData.isMinority}
-                  onCheckedChange={(checked) => updateField("isMinority", !!checked)}
-                />
-                <Label htmlFor="minority" className="text-sm font-normal cursor-pointer">
-                  {t("form.minority")}
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="bpl"
-                  checked={formData.isBPL}
-                  onCheckedChange={(checked) => updateField("isBPL", !!checked)}
-                />
-                <Label htmlFor="bpl" className="text-sm font-normal cursor-pointer">
-                  {t("form.bpl")}
-                </Label>
-              </div>
-            </div>
+                <span className="leading-snug">{chip.label}</span>
+              </button>
+            ))}
           </div>
+        </section>
 
-          <Button type="submit" variant="hero" size="xl" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                {t("form.loading")}
-              </>
-            ) : (
-              <>
-                <Sparkles className="mr-2 h-5 w-5" />
-                {t("form.submit")}
-              </>
-            )}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+        <Button
+          type="submit"
+          variant="default"
+          size="xl"
+          className="mt-2 w-full shadow-[0_0_40px_rgba(255,255,255,0.12)]"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              {t("form.loading")}
+            </>
+          ) : (
+            <>
+              <ListChecks className="mr-2 h-5 w-5" />
+              {t("form.submit")}
+            </>
+          )}
+        </Button>
+      </form>
+    </div>
   );
 };
 

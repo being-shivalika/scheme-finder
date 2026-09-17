@@ -21,34 +21,29 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (session) {
-      navigate("/for-you");
-    }
+    if (session) navigate("/for-you");
   }, [session, navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      const endpoint = isSignUp ? '/api/auth/signup' : '/api/auth/login';
+      const endpoint = isSignUp ? "/api/auth/signup" : "/api/auth/login";
       const response = await apiFetch(endpoint, {
-        method: 'POST',
-        body: JSON.stringify({ email, password })
+        method: "POST",
+        body: JSON.stringify({ email, password }),
       });
-
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Authentication failed");
-      }
-
+      if (!response.ok) throw new Error(data.error || "Authentication failed");
       setSession({ user: data.user });
-      toast({ title: isSignUp ? "Account Created!" : "Welcome back!", description: "Successfully logged in." });
-    } catch (err: any) {
+      toast({
+        title: isSignUp ? "Account Created!" : "Welcome back!",
+        description: "Successfully logged in.",
+      });
+    } catch (err: unknown) {
       toast({
         title: "Error",
-        description: err.message,
+        description: err instanceof Error ? err.message : "Authentication failed",
         variant: "destructive",
       });
     } finally {
@@ -57,25 +52,27 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-aurora">
       <Header />
-      
-      <main className="flex-1 flex items-center justify-center py-12 px-4">
-        <Card className="w-full max-w-md shadow-elegant border-border">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="font-display text-2xl">
-              {isSignUp ? "Create an Account" : "Welcome Back"}
+      <main className="flex flex-1 items-center justify-center px-4 pb-16 pt-28">
+        <Card className="w-full max-w-md border-obsidian shadow-float">
+          <CardHeader className="pb-2 text-center">
+            <p className="section-eyebrow mb-2">Account</p>
+            <CardTitle className="text-heading-sm">
+              {isSignUp ? "Create an account" : "Welcome back"}
             </CardTitle>
-            <CardDescription className="text-base">
-              {isSignUp 
-                ? "Sign up to save schemes and track applications securely" 
+            <CardDescription className="text-[15px]">
+              {isSignUp
+                ? "Save schemes and track applications securely"
                 : "Sign in to your SchemeSetu dashboard"}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleAuth} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-ash">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -86,7 +83,9 @@ const Login = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-ash">
+                  Password
+                </Label>
                 <Input
                   id="password"
                   type="password"
@@ -97,19 +96,17 @@ const Login = () => {
                   minLength={isSignUp ? 8 : 1}
                 />
               </div>
-              
-              <Button type="submit" variant="hero" className="w-full mt-6" disabled={isLoading}>
+              <Button type="submit" variant="default" className="mt-6 w-full" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {isSignUp ? "Sign Up" : "Sign In"}
               </Button>
             </form>
-            
-            <div className="mt-6 text-center text-sm text-muted-foreground">
+            <div className="mt-6 text-center text-sm text-ash">
               {isSignUp ? "Already have an account?" : "Don't have an account?"}
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="ml-1 text-primary hover:underline font-medium"
+                className="ml-1 font-medium text-signal hover:underline"
               >
                 {isSignUp ? "Sign In" : "Sign Up"}
               </button>
@@ -117,7 +114,6 @@ const Login = () => {
           </CardContent>
         </Card>
       </main>
-
       <Footer />
     </div>
   );
