@@ -7,7 +7,7 @@ import { apiFetch } from "@/lib/api";
 import { Link } from "react-router-dom";
 
 interface Message {
-  role: 'user' | 'ai';
+  role: "user" | "ai";
   content: string;
 }
 
@@ -15,7 +15,10 @@ const Chatbot = () => {
   const { session } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', content: 'Hi! I am the Scheme Setu assistant. Sign in to ask about schemes in our catalog.' }
+    {
+      role: "ai",
+      content: "Hi — I'm the Scheme Setu assistant. Sign in to ask about schemes in our catalog.",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -27,40 +30,37 @@ const Chatbot = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-
     if (!session) {
-      setMessages(prev => [...prev, {
-        role: 'ai',
-        content: 'Please sign in to use the assistant. This helps protect the service from abuse.'
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "ai",
+          content: "Please sign in to use the assistant. This helps protect the service from abuse.",
+        },
+      ]);
       return;
     }
 
     const userMsg = input.trim();
     setInput("");
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    setMessages((prev) => [...prev, { role: "user", content: userMsg }]);
     setIsLoading(true);
 
     try {
-      const res = await apiFetch('/api/chat', {
-        method: 'POST',
+      const res = await apiFetch("/api/chat", {
+        method: "POST",
         body: JSON.stringify({ message: userMsg }),
       });
-
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data.error || "API Error");
-      }
-
-      if (data.reply) {
-        setMessages(prev => [...prev, { role: 'ai', content: data.reply }]);
-      } else {
-        setMessages(prev => [...prev, { role: 'ai', content: data.error || 'No reply received.' }]);
-      }
+      if (!res.ok) throw new Error(data.error || "API Error");
+      setMessages((prev) => [
+        ...prev,
+        { role: "ai", content: data.reply || data.error || "No reply received." },
+      ]);
     } catch (error) {
-      console.error(error);
-      const msg = error instanceof Error ? error.message : "Sorry, I'm having trouble connecting right now.";
-      setMessages(prev => [...prev, { role: 'ai', content: msg }]);
+      const msg =
+        error instanceof Error ? error.message : "Sorry, I'm having trouble connecting right now.";
+      setMessages((prev) => [...prev, { role: "ai", content: msg }]);
     } finally {
       setIsLoading(false);
     }
@@ -70,44 +70,53 @@ const Chatbot = () => {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
+        className={`fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-quartz text-[#050606] shadow-elegant transition-transform hover:scale-105 active:scale-95 ${
+          isOpen ? "pointer-events-none scale-0 opacity-0" : "scale-100 opacity-100"
+        }`}
         aria-label="Open AI Assistant"
       >
-        <MessageCircle size={28} />
+        <MessageCircle size={22} />
       </button>
 
       <div
-        className={`fixed bottom-6 left-6 z-50 flex h-[500px] max-h-[80vh] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl transition-all duration-300 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0 pointer-events-none'}`}
+        className={`fixed bottom-6 left-6 z-50 flex h-[500px] max-h-[80vh] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-xl border border-obsidian bg-deep-sea shadow-float transition-all duration-300 ${
+          isOpen
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-6 opacity-0"
+        }`}
       >
-        <div className="flex items-center justify-between bg-primary px-4 py-3 text-primary-foreground">
-          <div className="flex items-center gap-2 font-medium">
-            <Bot size={20} />
+        <div className="flex items-center justify-between border-b border-inkline bg-cobalt px-4 py-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-quartz">
+            <Bot size={18} className="text-lilac" />
             <span>Scheme Setu AI</span>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="rounded-full p-1 hover:bg-primary-foreground/20 transition-colors"
+            className="rounded-full p-1 text-ash transition-colors hover:bg-white/10 hover:text-quartz"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/30">
+        <div className="flex-1 space-y-3 overflow-y-auto bg-abyss/50 p-4">
           {!session && (
-            <div className="rounded-lg border border-border bg-card p-3 text-sm text-muted-foreground">
-              <Link to="/login" className="text-primary underline">Sign in</Link> to chat about schemes.
+            <div className="rounded-lg border border-obsidian bg-void p-3 text-sm text-ash">
+              <Link to="/login" className="text-signal underline">
+                Sign in
+              </Link>{" "}
+              to chat about schemes.
             </div>
           )}
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
-                  msg.role === 'user'
-                    ? 'bg-primary text-primary-foreground rounded-br-sm'
-                    : 'bg-card border border-border text-card-foreground rounded-bl-sm shadow-sm'
+                className={`max-w-[85%] whitespace-pre-wrap rounded-xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
+                  msg.role === "user"
+                    ? "rounded-br-sm bg-quartz text-[#050606]"
+                    : "rounded-bl-sm border border-inkline bg-deep-sea text-mist"
                 }`}
               >
                 {msg.content}
@@ -116,15 +125,15 @@ const Chatbot = () => {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-card border border-border rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
-                <Loader2 size={16} className="animate-spin text-muted-foreground" />
+              <div className="rounded-xl border border-inkline bg-deep-sea px-4 py-3">
+                <Loader2 size={14} className="animate-spin text-ash" />
               </div>
             </div>
           )}
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="border-t border-border bg-background p-3">
+        <div className="border-t border-inkline bg-deep-sea p-3">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -135,8 +144,8 @@ const Chatbot = () => {
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={session ? "Ask about schemes..." : "Sign in to chat"}
-              className="flex-1 bg-muted/50 border-border focus-visible:ring-primary/50 rounded-full px-4"
+              placeholder={session ? "Ask about schemes…" : "Sign in to chat"}
+              className="flex-1 rounded-full"
               disabled={isLoading || !session}
               maxLength={2000}
             />
@@ -144,9 +153,9 @@ const Chatbot = () => {
               type="submit"
               size="icon"
               disabled={!input.trim() || isLoading || !session}
-              className="shrink-0 rounded-full h-10 w-10"
+              className="h-10 w-10 shrink-0"
             >
-              <Send size={16} />
+              <Send size={15} />
             </Button>
           </form>
         </div>

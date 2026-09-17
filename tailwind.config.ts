@@ -12,17 +12,34 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1200px",
       },
     },
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "system-ui", "sans-serif"],
-        display: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Figtree", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["IBM Plex Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       colors: {
+        void: "#0b0c0e",
+        abyss: "#0e111b",
+        "deep-sea": "#0d172b",
+        cobalt: "#12244f",
+        lilac: "#85a6e9",
+        signal: "#2862d7",
+        pulse: "#305fbd",
+        aurora: "#625fff",
+        plasma: "#ff7dda",
+        quartz: "#ffffff",
+        ash: "#abaebb",
+        mist: "#c7c9d1",
+        slate: "#3c3f44",
+        obsidian: "#172540",
+        inkline: "#151e32",
+        sapphire: "#24375a",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -80,9 +97,17 @@ export default {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "12px",
+        md: "8px",
+        sm: "2px",
+      },
+      boxShadow: {
+        elegant: "rgba(0, 0, 0, 0.5) 0px 4px 30px 0px",
+        float: "rgba(0, 0, 0, 0.34) 0px 20px 35px 0px, rgba(0, 0, 0, 0.25) 0px 4px 13px 0px",
+        soft: "rgba(0, 0, 0, 0.2) 0px 3px 16px 0px",
+      },
+      maxWidth: {
+        page: "1200px",
       },
       keyframes: {
         "accordion-down": {

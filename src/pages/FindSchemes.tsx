@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiFetch } from "@/lib/api";
-import { AlertCircle, Loader2, ListChecks } from "lucide-react";
+import { AlertCircle, Loader2, Sparkles } from "lucide-react";
 
 const FindSchemes = () => {
   const { session } = useAuth();
@@ -33,36 +33,36 @@ const FindSchemes = () => {
     setError(null);
 
     try {
-      const profileRes = await apiFetch('/api/profiles', {
-        method: 'POST',
+      const profileRes = await apiFetch("/api/profiles", {
+        method: "POST",
         body: JSON.stringify(profile),
       });
       if (!profileRes.ok) throw new Error("Failed to save profile");
 
-      const matchRes = await apiFetch('/api/schemes/match', {
-        method: 'POST',
+      const matchRes = await apiFetch("/api/schemes/match", {
+        method: "POST",
         body: JSON.stringify(profile),
       });
       if (!matchRes.ok) throw new Error("Failed to match schemes");
       const matchData = await matchRes.json();
-      const eligibleCount = matchData.counts?.eligible ??
-        matchData.schemes?.filter((m: { matchStatus: string }) => m.matchStatus === 'eligible').length ?? 0;
+      const eligibleCount =
+        matchData.counts?.eligible ??
+        matchData.schemes?.filter((m: { matchStatus: string }) => m.matchStatus === "eligible")
+          .length ??
+        0;
 
-      // Server recomputes and persists only eligible schemes
-      const schemesRes = await apiFetch('/api/user-schemes', { method: 'POST', body: '{}' });
+      const schemesRes = await apiFetch("/api/user-schemes", { method: "POST", body: "{}" });
       if (!schemesRes.ok) throw new Error("Failed to save schemes");
 
       toast({
         title: "Profile Saved",
         description: eligibleCount
           ? `We found ${eligibleCount} scheme(s) you appear eligible for.`
-          : "No verified eligible matches yet. Browse schemes or update your profile details.",
+          : "No verified eligible matches yet. Browse schemes or update your profile.",
       });
-
       navigate("/for-you");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Failed to find matching schemes.";
-      console.error("Error matching schemes:", err);
       setError(message);
       toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
@@ -71,41 +71,57 @@ const FindSchemes = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-void">
+      {/* Ambient glows */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(60% 50% at 20% 0%, rgba(98, 95, 255, 0.28) 0%, transparent 55%), radial-gradient(45% 40% at 90% 20%, rgba(255, 159, 252, 0.18) 0%, transparent 50%), radial-gradient(40% 35% at 50% 100%, rgba(40, 98, 215, 0.15) 0%, transparent 55%)",
+        }}
+      />
+
       <Header />
 
-      <main className="flex-1 py-12">
-        <div className="container px-4 max-w-4xl mx-auto">
+      <main className="relative z-10 flex-1 pb-16 pt-24">
+        <div className="container max-w-3xl">
           <div className="mb-8 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 mb-4">
-              <ListChecks className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Rules-Based Eligibility Matching</span>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5 text-lilac" />
+              <span className="text-[12px] font-medium text-mist">Rules-based eligibility</span>
             </div>
-            <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl mb-4">
-              Find Your Eligible Schemes
+            <h1 className="font-display text-heading-sm text-quartz md:text-heading">
+              Find your eligible schemes
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Fill in your details. We evaluate structured eligibility rules and only recommend verified matches.
+            <p className="mx-auto mt-3 max-w-xl text-[15px] font-light text-ash">
+              A few details — we match verified rules and recommend only what you appear eligible for.
             </p>
           </div>
 
           {error && (
-            <Alert variant="destructive" className="mb-6">
+            <Alert variant="destructive" className="mb-6 border-destructive/40 bg-destructive/10">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
-          <div className="bg-white rounded-2xl shadow-sm border border-border p-6 md:p-8">
-            {schemesLoading ? (
-              <div className="flex flex-col items-center justify-center py-10 space-y-4">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground">Loading latest schemes data...</p>
-              </div>
-            ) : (
-              <UserProfileForm onSubmit={handleProfileSubmit} isLoading={isLoading} />
-            )}
+          {/* Glass panel */}
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-deep-sea/50 p-6 shadow-float backdrop-blur-xl md:p-8">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-aurora/60 to-transparent" />
+            <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-aurora/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-16 h-40 w-40 rounded-full bg-plasma/10 blur-3xl" />
+
+            <div className="relative">
+              {schemesLoading ? (
+                <div className="flex flex-col items-center justify-center space-y-4 py-16">
+                  <Loader2 className="h-8 w-8 animate-spin text-lilac" />
+                  <p className="text-ash">Loading schemes catalog…</p>
+                </div>
+              ) : (
+                <UserProfileForm onSubmit={handleProfileSubmit} isLoading={isLoading} />
+              )}
+            </div>
           </div>
         </div>
       </main>

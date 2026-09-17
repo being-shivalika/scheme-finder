@@ -65,11 +65,11 @@ const Admin = () => {
 
   if (isAuthLoading || isLoading) {
     return (
-      <div className="flex min-h-screen flex-col bg-background">
+      <div className="flex min-h-screen flex-col bg-abyss">
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="animate-pulse flex flex-col items-center">
-            <Activity className="h-8 w-8 text-primary mb-4" />
+            <Activity className="h-8 w-8 text-signal mb-4" />
             <p>Loading Admin Dashboard...</p>
           </div>
         </main>
@@ -79,20 +79,20 @@ const Admin = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-abyss">
       <Header />
       
-      <main className="flex-1 py-12">
+      <main className="flex-1 pb-12 pt-24">
         <div className="container px-4 max-w-6xl">
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 mb-4">
-              <Activity className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Admin Only</span>
+              <Activity className="h-4 w-4 text-signal" />
+              <span className="text-sm font-medium text-signal">Admin Only</span>
             </div>
-            <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            <h1 className="font-display text-3xl font-bold text-quartz md:text-4xl">
               Platform Analytics
             </h1>
-            <p className="mt-2 text-muted-foreground">
+            <p className="mt-2 text-ash">
               Overview of SchemeSetu usage, eligibility checks, and scheme applications.
             </p>
           </div>
@@ -102,7 +102,7 @@ const Admin = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Registered Users</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <Users className="h-4 w-4 text-ash" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats.totalUsers}</div>
@@ -111,7 +111,7 @@ const Admin = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Matches Generated</CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
+                <FileText className="h-4 w-4 text-ash" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats.totalChecks}</div>
@@ -120,7 +120,7 @@ const Admin = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Schemes Saved</CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <Activity className="h-4 w-4 text-ash" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats.totalSaved}</div>
@@ -129,7 +129,7 @@ const Admin = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Schemes Applied</CardTitle>
-                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                <CheckCircle className="h-4 w-4 text-ash" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stats.totalApplied}</div>
@@ -154,7 +154,7 @@ const Admin = () => {
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="flex items-center justify-center h-full text-muted-foreground">
+                  <div className="flex items-center justify-center h-full text-ash">
                     No matching data available yet.
                   </div>
                 )}

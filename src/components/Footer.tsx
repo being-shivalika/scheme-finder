@@ -1,75 +1,62 @@
 import { Link } from "react-router-dom";
-import { Search, Heart, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Footer = () => {
   const { user } = useAuth();
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user?.role === "admin";
 
   return (
-    <footer className="border-t border-border bg-muted/30 mt-auto">
-      <div className="container px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-3">
+    <footer className="mt-auto border-t border-inkline bg-void">
+      <div className="container py-16">
+        <div className="grid gap-10 md:grid-cols-3">
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-hero-gradient">
-                <Search className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="font-display text-xl font-bold text-foreground">
-                SchemeSetu
-              </span>
+            <Link to="/" className="flex items-center gap-2.5">
+              <img
+                src="/logo.png"
+                alt="SchemeSetu"
+                className="h-8 w-8 rounded-lg object-contain"
+              />
+              <span className="font-display text-lg font-medium text-quartz">SchemeSetu</span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Helping Indian citizens discover and access government schemes and benefits they deserve.
+            <p className="max-w-xs text-[15px] font-light leading-relaxed text-ash">
+              Helping Indian citizens discover government schemes with verified, rules-based eligibility matching.
             </p>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-display font-semibold text-foreground">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/schemes" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Browse All Schemes
-                </Link>
-              </li>
-              <li>
-                <Link to="/find-schemes" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Check Eligibility
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Contact
-                </Link>
-              </li>
-              {isAdmin && (
-                <li>
-                  <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                    <Shield className="h-3 w-3" /> Admin Dashboard
+            <p className="section-eyebrow">Quick Links</p>
+            <ul className="space-y-2.5">
+              {[
+                { to: "/schemes", label: "Browse All Schemes" },
+                { to: "/find-schemes", label: "Check Eligibility" },
+                { to: "/about", label: "About Us" },
+                { to: "/contact", label: "Contact" },
+                ...(isAdmin ? [{ to: "/admin", label: "Admin Dashboard" }] : []),
+              ].map((item) => (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="text-[14px] text-mist transition-colors hover:text-quartz"
+                  >
+                    {item.label}
                   </Link>
                 </li>
-              )}
+              ))}
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-display font-semibold text-foreground">Disclaimer</h3>
-            <p className="text-xs text-muted-foreground">
-              This is an informational tool. Please verify eligibility criteria on official government websites before applying. We do not guarantee approval of any scheme.
+            <p className="section-eyebrow">Disclaimer</p>
+            <p className="text-[13px] font-light leading-relaxed text-ash">
+              Informational tool only. Verify eligibility on official government websites before applying.
+              We do not guarantee approval of any scheme.
             </p>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">© 2026 SchemeSetu. For informational purposes only.</p>
-          <p className="flex items-center gap-1 text-xs text-muted-foreground">
-            Made with <Heart className="h-3 w-3 text-destructive fill-destructive" /> for every Indian citizen
-          </p>
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-inkline pt-8 sm:flex-row">
+          <p className="text-xs text-ash">© 2026 SchemeSetu. For informational purposes only.</p>
+          <p className="font-mono text-xs text-slate">rules-engine · not legal advice</p>
         </div>
       </div>
     </footer>

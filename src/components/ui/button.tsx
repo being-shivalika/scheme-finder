@@ -5,24 +5,28 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-[15px] font-medium font-sans ring-offset-background transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-2 focus-visible:ring-offset-abyss disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg",
+        default: "bg-quartz text-[#050606] hover:bg-quartz/90",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
-        ghost: "hover:bg-accent/10 hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-gradient-to-r from-[hsl(217,91%,45%)] via-[hsl(199,89%,48%)] to-[hsl(173,58%,39%)] text-white shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
-        success: "bg-[hsl(152,69%,31%)] text-white hover:bg-[hsl(152,69%,26%)] shadow-sm",
+        outline:
+          "border border-[#777a88] bg-transparent text-quartz hover:bg-white/5",
+        secondary:
+          "bg-deep-sea text-quartz border border-obsidian hover:bg-cobalt",
+        ghost: "text-ash hover:text-quartz hover:bg-white/5",
+        link: "text-signal underline-offset-4 hover:underline rounded-none",
+        hero: "bg-quartz text-[#050606] hover:bg-quartz/90",
+        accent:
+          "bg-[linear-gradient(90deg,#305fbd,#625fff)] text-quartz hover:opacity-95",
+        success: "bg-success text-success-foreground hover:bg-success/90",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-12 rounded-lg px-8 text-base",
-        xl: "h-14 rounded-xl px-10 text-lg font-semibold",
+        default: "h-10 px-5 py-2.5",
+        sm: "h-9 px-4 text-sm",
+        lg: "h-11 px-6 text-base",
+        xl: "h-12 px-7 text-base",
         icon: "h-10 w-10",
       },
     },
