@@ -8,6 +8,7 @@ import { Activity, Bookmark, CheckCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { apiFetch } from "@/lib/api";
 import { Scheme } from "@/types/scheme";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,20 +37,14 @@ const ForYou = () => {
 
     setIsLoading(true);
     try {
-      const token = session.token;
-
       // Fetch Profile
-      const profileRes = await fetch("/api/profiles/me", {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const profileRes = await apiFetch("/api/profiles/me");
       if (profileRes.ok) {
         setProfile(await profileRes.json());
       }
 
       // Fetch user_schemes
-      const schemesRes = await fetch("/api/user-schemes", {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const schemesRes = await apiFetch("/api/user-schemes");
       
       if (schemesRes.ok) {
         const schemesData = await schemesRes.json();
@@ -98,12 +93,8 @@ const ForYou = () => {
         setApplied(newAll.filter((s: any) => s._status === 'applied'));
       }
 
-      const response = await fetch(`/api/user-schemes/${schemeId}`, {
+      const response = await apiFetch(`/api/user-schemes/${schemeId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.token}`
-        },
         body: JSON.stringify({ status: newStatus })
       });
         

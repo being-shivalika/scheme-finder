@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { apiFetch } from "@/lib/api";
 import { Activity, Users, FileText, CheckCircle } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -38,9 +39,7 @@ const Admin = () => {
 
     const fetchAdminData = async () => {
       try {
-        const response = await fetch('/api/admin/stats', {
-          headers: { 'Authorization': `Bearer ${session.token}` }
-        });
+        const response = await apiFetch('/api/admin/stats');
         
         if (!response.ok) throw new Error("Failed to fetch admin stats");
         

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { apiFetch } from '@/lib/api';
 
 interface User {
   id: string;
@@ -7,41 +8,34 @@ interface User {
 }
 
 interface AuthContextType {
-  session: { user: User, token: string } | null;
+  session: { user: User } | null;
   user: User | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
-  setSession: (session: { user: User, token: string } | null) => void;
+  setSession: (session: { user: User } | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [session, setSession] = useState<{ user: User, token: string } | null>(null);
+  const [session, setSessionState] = useState<{ user: User } | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Clear legacy XSS-prone token storage
+    localStorage.removeItem('scheme_setu_token');
+
     const initAuth = async () => {
-      const token = localStorage.getItem('scheme_setu_token');
-      if (token) {
-        try {
-          const res = await fetch('/api/auth/me', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            const sessionData = { user: data.user, token };
-            setSession(sessionData);
-            setUser(data.user);
-          } else {
-            localStorage.removeItem('scheme_setu_token');
-          }
-        } catch (error) {
-          console.error("Auth init error:", error);
+      try {
+        const res = await apiFetch('/api/auth/me');
+        if (res.ok) {
+          const data = await res.json();
+          setSessionState({ user: data.user });
+          setUser(data.user);
         }
+      } catch (error) {
+        console.error('Auth init error:', error);
       }
       setIsLoading(false);
     };
@@ -49,19 +43,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initAuth();
   }, []);
 
-  const handleSetSession = (newSession: { user: User, token: string } | null) => {
-    if (newSession) {
-      localStorage.setItem('scheme_setu_token', newSession.token);
-      setSession(newSession);
-      setUser(newSession.user);
-    } else {
-      localStorage.removeItem('scheme_setu_token');
-      setSession(null);
-      setUser(null);
-    }
+  const handleSetSession = (newSession: { user: User } | null) => {
+    setSessionState(newSession);
+    setUser(newSession?.user ?? null);
   };
 
   const signOut = async () => {
+    try {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+    } catch {
+      // ignore
+    }
     handleSetSession(null);
   };
 

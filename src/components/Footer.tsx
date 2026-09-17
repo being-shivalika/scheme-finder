@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import { Search, Heart, Shield } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+
 const Footer = () => {
-  return <footer className="border-t border-border bg-muted/30 mt-auto">
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
+
+  return (
+    <footer className="border-t border-border bg-muted/30 mt-auto">
       <div className="container px-4 py-12">
         <div className="grid gap-8 md:grid-cols-3">
-          {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-hero-gradient">
@@ -19,7 +24,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div className="space-y-4">
             <h3 className="font-display font-semibold text-foreground">Quick Links</h3>
             <ul className="space-y-2">
@@ -43,15 +47,16 @@ const Footer = () => {
                   Contact
                 </Link>
               </li>
-              <li>
-                <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                  <Shield className="h-3 w-3" /> Admin Dashboard
-                </Link>
-              </li>
+              {isAdmin && (
+                <li>
+                  <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                    <Shield className="h-3 w-3" /> Admin Dashboard
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
-          {/* Disclaimer */}
           <div className="space-y-4">
             <h3 className="font-display font-semibold text-foreground">Disclaimer</h3>
             <p className="text-xs text-muted-foreground">
@@ -67,6 +72,8 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
