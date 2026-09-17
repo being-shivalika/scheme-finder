@@ -56,12 +56,24 @@ export function evaluateRules(scheme, profile) {
 
     switch (operator) {
       case "=":
-        isMet = profileValue === value;
+        if (typeof value === 'number' || typeof profileValue === 'number') {
+          isMet = Number(profileValue) === Number(value);
+        } else if (typeof value === 'boolean' || typeof profileValue === 'boolean') {
+          isMet = profileValue === value;
+        } else {
+          isMet = String(profileValue).toLowerCase() === String(value).toLowerCase();
+        }
         reasonText = `${field} is equal to ${value}`;
         unmetText = `${field} must be equal to ${value}`;
         break;
       case "!=":
-        isMet = profileValue !== value;
+        if (typeof value === 'number' || typeof profileValue === 'number') {
+          isMet = Number(profileValue) !== Number(value);
+        } else if (typeof value === 'boolean' || typeof profileValue === 'boolean') {
+          isMet = profileValue !== value;
+        } else {
+          isMet = String(profileValue).toLowerCase() !== String(value).toLowerCase();
+        }
         reasonText = `${field} is not equal to ${value}`;
         unmetText = `${field} must not be equal to ${value}`;
         break;
@@ -86,12 +98,16 @@ export function evaluateRules(scheme, profile) {
         unmetText = `${field} must be at most ${value}`;
         break;
       case "IN":
-        isMet = Array.isArray(value) && value.includes(profileValue);
+        isMet = Array.isArray(value) && value.some(
+          (v) => String(v).toLowerCase() === String(profileValue).toLowerCase()
+        );
         reasonText = `${field} matches required criteria`;
         unmetText = `${field} must be one of: ${value.join(", ")}`;
         break;
       case "NOT_IN":
-        isMet = Array.isArray(value) && !value.includes(profileValue);
+        isMet = Array.isArray(value) && !value.some(
+          (v) => String(v).toLowerCase() === String(profileValue).toLowerCase()
+        );
         reasonText = `${field} is not restricted`;
         unmetText = `${field} cannot be one of: ${value.join(", ")}`;
         break;
@@ -127,8 +143,12 @@ export function evaluateRules(scheme, profile) {
       matchStatus = "needs_verification";
       matchReasons.push("Matches based on partial rules. Verify official guidelines.");
     }
-  } else if (missingFields.size > 0 && !result.isMet) {
-    matchStatus = "needs_verification";
+  } else if (missingFields.size > 0) {
+    const hasHardUnmet = unmetCriteria.some(
+      (u) => !String(u).startsWith("Missing information:")
+    );
+    // Hard rule failures win over missing fields (e.g. income too high + missing state)
+    matchStatus = hasHardUnmet ? "not_eligible" : "needs_verification";
     confidence = "partial";
   } else {
     matchStatus = "not_eligible";

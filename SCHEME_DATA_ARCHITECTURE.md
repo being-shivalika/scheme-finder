@@ -47,10 +47,16 @@ Every returned scheme includes `sourceName` (e.g., "myScheme" or "data.gov.in (S
 ## Environment Variables
 - `DATA_GOV_API_KEY`: API key for data.gov.in
 - `DATA_GOV_RESOURCE_ID`: ID for supplementary dataset fetching
+- `JWT_SECRET`: Required in production (no insecure fallback)
+- `ALLOWED_ORIGINS`: Comma-separated CORS allowlist (credentials enabled)
+- `GEMINI_API_KEY`: Server-side chat only
+- `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`: Admin seed script only
 
 ## API Endpoints
 - `GET /api/schemes`: Returns all merged, cached schemes from all adapters.
 - `POST /api/schemes/match`: Accepts a user profile body and returns structured evaluation results (`{ matchStatus, matchReasons, unmetCriteria, missingFields }`).
+- `POST /api/user-schemes`: Recomputes matches server-side from the saved profile and persists **eligible** schemes only.
+- `POST /api/chat`: Authenticated, rate-limited Gemini assistant grounded on the catalog.
 
-## Caching
-`public-schemes.js` implements an in-memory 5-minute TTL cache (`CACHE_TTL_MS`). If an external source fails, the system gracefully falls back to returning the expired cache or the available seeded data without breaking the user experience.
+## Recommendation policy
+Only schemes with `matchStatus: "eligible"` (verified structured rules that fully pass) are saved to the user dashboard. Schemes without rules remain browseable via `GET /api/schemes` but are not auto-recommended.

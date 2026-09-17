@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { apiFetch } from "@/lib/api";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
@@ -31,9 +32,8 @@ const Login = () => {
 
     try {
       const endpoint = isSignUp ? '/api/auth/signup' : '/api/auth/login';
-      const response = await fetch(endpoint, {
+      const response = await apiFetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
 
@@ -43,7 +43,7 @@ const Login = () => {
         throw new Error(data.error || "Authentication failed");
       }
 
-      setSession({ user: data.user, token: data.token });
+      setSession({ user: data.user });
       toast({ title: isSignUp ? "Account Created!" : "Welcome back!", description: "Successfully logged in." });
     } catch (err: any) {
       toast({
@@ -94,6 +94,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
+                  minLength={isSignUp ? 8 : 1}
                 />
               </div>
               

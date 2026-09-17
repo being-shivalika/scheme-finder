@@ -16,25 +16,25 @@ const Index = () => {
   const features = [
     {
       icon: Search,
-      title: "Smart Matching",
-      description: "AI-powered engine matches your profile with eligible schemes instantly.",
+      title: "Rules-Based Matching",
+      description: "Structured eligibility rules evaluate your profile against verified scheme criteria.",
     },
     {
       icon: Shield,
       title: "Verified Information",
-      description: "All scheme details sourced from official government portals.",
+      description: "Scheme details include source attribution so you can confirm on official portals.",
     },
     {
       icon: Zap,
       title: "Instant Results",
-      description: "Get personalized scheme recommendations in seconds, not hours.",
+      description: "Get eligibility results in seconds — only schemes that pass verified rules are recommended.",
     },
   ];
 
   const steps = [
     { step: "01", title: "Enter Your Details", description: "Fill in basic information about yourself - age, income, occupation, and more." },
-    { step: "02", title: "AI Analysis", description: "Our AI analyzes your profile against hundreds of government schemes." },
-    { step: "03", title: "Get Matched Schemes", description: "Receive a personalized list of schemes you're likely eligible for." },
+    { step: "02", title: "Rule Evaluation", description: "Our matching engine checks your profile against structured eligibility rules." },
+    { step: "03", title: "Get Matched Schemes", description: "Receive schemes you appear eligible for, with clear reasons and official links." },
   ];
 
   return (

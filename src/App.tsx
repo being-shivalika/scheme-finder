@@ -9,6 +9,8 @@ import FindSchemes from "./pages/FindSchemes";
 import ForYou from "./pages/ForYou";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -33,7 +35,8 @@ const App = () => (
               <Route path="/find-schemes" element={<FindSchemes />} />
               <Route path="/for-you" element={<ForYou />} />
               <Route path="/admin" element={<Admin />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

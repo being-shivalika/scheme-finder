@@ -44,7 +44,18 @@ const SchemeCard = ({ scheme, showMatchScore = false, status = 'matched', onSave
           >
             {scheme.category}
           </Badge>
-          {showMatchScore && matchScore > 0 && (
+          {showMatchScore && scheme.matchStatus === 'eligible' && (
+            <div className="flex items-center gap-1 rounded-full bg-success/10 px-2 py-1">
+              <Star className="h-3 w-3 fill-success text-success" />
+              <span className="text-xs font-semibold text-success">Eligible</span>
+            </div>
+          )}
+          {showMatchScore && scheme.matchStatus === 'needs_verification' && (
+            <div className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1">
+              <span className="text-xs font-semibold text-amber-800">Verify</span>
+            </div>
+          )}
+          {showMatchScore && !scheme.matchStatus && matchScore > 0 && (
             <div className="flex items-center gap-1 rounded-full bg-success/10 px-2 py-1">
               <Star className="h-3 w-3 fill-success text-success" />
               <span className="text-xs font-semibold text-success">{matchScore}%</span>
