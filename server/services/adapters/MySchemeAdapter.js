@@ -1,33 +1,10 @@
-import { Scheme } from "@/types/scheme";
+import fs from 'fs';
+import path from 'path';
+import { governmentSchemes as oldSchemes } from './oldSchemesData.js';
 
-export const schemeCategories = [
-  "All Categories",
-  "Housing",
-  "Healthcare",
-  "Education",
-  "Agriculture",
-  "Business & Entrepreneurship",
-  "Financial Inclusion",
-  "Insurance",
-  "Women & Child Welfare",
-  "Energy & Welfare",
-  "Employment & Skills",
-  "Pension & Retirement",
-  "Disability Welfare",
-];
-
-export const indianStates = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
-  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
-  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
-  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
-  "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu",
-  "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
-];
-
-// Seeded verified schemes from MyScheme
-export const governmentSchemes: Scheme[] = [
+// A mock version of the seed data for the backend to use. 
+// Ideally we would share this with the frontend, but Vite handles TS for frontend.
+const seededSchemes = [
   {
     id: "pmay-urban",
     name: "Pradhan Mantri Awas Yojana (Urban)",
@@ -70,7 +47,7 @@ export const governmentSchemes: Scheme[] = [
         { field: "isBPL", operator: "=", value: true }
       ]
     },
-    eligibilityRulesVerified: false, // Needs SECC check, so partial verify
+    eligibilityRulesVerified: false,
     benefits: "₹1.20 lakhs in plains and ₹1.30 lakhs in hilly areas for house construction",
     applicationLink: "https://pmayg.nic.in/",
     ministry: "Ministry of Rural Development",
@@ -89,7 +66,7 @@ export const governmentSchemes: Scheme[] = [
     eligibilityRules: {
       operator: "AND",
       conditions: [
-        { field: "occupation", operator: "IN", value: ["farmer", "daily-wage"] } // Assuming daily-wage could be farmer
+        { field: "occupation", operator: "IN", value: ["farmer", "daily-wage"] }
       ]
     },
     eligibilityRulesVerified: true,
@@ -112,7 +89,7 @@ export const governmentSchemes: Scheme[] = [
     eligibilityRules: {
       operator: "AND",
       conditions: [
-        { field: "category", operator: "IN", value: ["sc"] },
+        { field: "category", operator: "IN", value: ["sc", "SC"] },
         { field: "income", operator: "<=", value: 250000 },
         { field: "occupation", operator: "IN", value: ["student"] }
       ]
@@ -125,3 +102,25 @@ export const governmentSchemes: Scheme[] = [
     sourceName: "myScheme"
   }
 ];
+
+// Combine seeded with old schemes, avoiding duplicates by ID
+const seededIds = seededSchemes.map(s => s.id);
+const mappedOldSchemes = oldSchemes
+  .filter(s => !seededIds.includes(s.id))
+  .map(s => ({
+    ...s,
+    eligibilityRulesVerified: false, // Old schemes don't have structured rules yet
+    sourceName: 'myScheme',
+    level: 'Central'
+  }));
+
+const allMySchemeData = [...seededSchemes, ...mappedOldSchemes];
+
+export async function getMySchemeData() {
+  // Simulate network delay
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(allMySchemeData);
+    }, 100);
+  });
+}

@@ -61,11 +61,37 @@ const SchemeCard = ({ scheme, showMatchScore = false, status = 'matched', onSave
         <p className="text-sm text-muted-foreground leading-relaxed">
           {scheme.description}
         </p>
+
+        {scheme.sourceName && (
+          <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+            <span className="font-medium">Source:</span>
+            {scheme.sourceUrl ? (
+              <a href={scheme.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                {scheme.sourceName}
+              </a>
+            ) : (
+              <span>{scheme.sourceName}</span>
+            )}
+          </div>
+        )}
         
-        {scheme.matchReason && (
+        {scheme.matchStatus === 'eligible' && scheme.matchReason && (
           <div className="rounded-lg bg-success/5 border border-success/20 p-3">
-            <p className="text-xs font-medium text-success">Why this matches you:</p>
+            <p className="text-xs font-medium text-success flex items-center gap-1"><CheckCircle2 className="h-3 w-3"/> You appear eligible</p>
             <p className="text-xs text-muted-foreground mt-1">{scheme.matchReason}</p>
+          </div>
+        )}
+        
+        {scheme.matchStatus === 'needs_verification' && (
+          <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-3">
+            <p className="text-xs font-medium text-yellow-700 flex items-center gap-1">⚠ Needs verification</p>
+            {scheme.missingFields && scheme.missingFields.length > 0 && (
+              <p className="text-xs text-yellow-600 mt-1">Missing info: {scheme.missingFields.join(', ')}</p>
+            )}
+            {scheme.unmetCriteria && scheme.unmetCriteria.length > 0 && (
+              <p className="text-xs text-yellow-600 mt-1">Unmet criteria: {scheme.unmetCriteria.join(', ')}</p>
+            )}
+            <p className="text-xs text-yellow-600 mt-1">{scheme.matchReason}</p>
           </div>
         )}
         
@@ -85,6 +111,13 @@ const SchemeCard = ({ scheme, showMatchScore = false, status = 'matched', onSave
             ))}
           </ul>
         </div>
+        
+        {scheme.requiredDocuments && scheme.requiredDocuments.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-foreground uppercase tracking-wide">Documents</p>
+            <p className="text-sm text-muted-foreground">{scheme.requiredDocuments.join(', ')}</p>
+          </div>
+        )}
       </CardContent>
       
       <CardFooter className="pt-4 flex flex-col gap-2">

@@ -5,15 +5,16 @@ import Footer from "@/components/Footer";
 import UserProfileForm from "@/components/UserProfileForm";
 import SchemeCard from "@/components/SchemeCard";
 import { UserProfile, Scheme } from "@/types/scheme";
-import { governmentSchemes } from "@/data/schemes";
+import { useSchemes } from "@/hooks/useSchemes";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, AlertCircle } from "lucide-react";
+import { ArrowLeft, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 
 const FindSchemes = () => {
   const { session } = useAuth();
+  const { schemes: allSchemes, loading: schemesLoading } = useSchemes();
   const [matchedSchemes, setMatchedSchemes] = useState<Scheme[] | null>(null);
   const [summary, setSummary] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,27 +47,30 @@ const FindSchemes = () => {
       
       if (!profileRes.ok) throw new Error("Failed to save profile");
 
-      // Score schemes locally
-      let matchedIds: any[] = [];
-      const scoreScheme = (scheme: Scheme, p: UserProfile) => {
-        let score = 0;
-        if (p.age) score += 10;
-        if (scheme.eligibility.some(e => e.toLowerCase().includes(p.state.toLowerCase()))) score += 20;
-        if (scheme.eligibility.some(e => e.toLowerCase().includes(p.gender.toLowerCase()))) score += 20;
-        return score;
-      };
-
-      governmentSchemes.forEach(scheme => {
-        const score = scoreScheme(scheme, profile);
-        if (score > 10) { // arbitrary threshold for demo
-          matchedIds.push({
-            schemeId: scheme.id,
-            eligibilityScore: score,
-            matchReason: 'Matched based on your profile details.',
-            schemeData: scheme
-          });
-        }
+      // Call matching API
+      const matchRes = await fetch('/api/schemes/match', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(profile)
       });
+
+      if (!matchRes.ok) throw new Error("Failed to match schemes");
+      const matchData = await matchRes.json();
+      
+      const matchedIds = matchData.schemes.filter((m: any) => m.matchStatus !== 'not_eligible').map((m: any) => ({
+        schemeId: m.scheme.id,
+        eligibilityScore: m.matchStatus === 'eligible' ? 100 : 50, // backwards compatibility
+        schemeData: {
+          ...m.scheme,
+          matchStatus: m.matchStatus,
+          matchReason: m.matchReasons.join('. '),
+          unmetCriteria: m.unmetCriteria,
+          missingFields: m.missingFields
+        },
+        status: 'matched'
+      }));
       
       // Save matched schemes to MongoDB
       if (matchedIds.length > 0) {
@@ -132,7 +136,14 @@ const FindSchemes = () => {
               )}
               
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 md:p-8">
-                <UserProfileForm onSubmit={handleProfileSubmit} isLoading={isLoading} />
+                {schemesLoading ? (
+                  <div className="flex flex-col items-center justify-center py-10 space-y-4">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="text-muted-foreground">Loading latest schemes data...</p>
+                  </div>
+                ) : (
+                  <UserProfileForm onSubmit={handleProfileSubmit} isLoading={isLoading} />
+                )}
               </div>
             </>
           ) : (

@@ -3,13 +3,15 @@ import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SchemeCard from "@/components/SchemeCard";
-import { governmentSchemes, schemeCategories } from "@/data/schemes";
+import { schemeCategories } from "@/data/schemes";
+import { useSchemes } from "@/hooks/useSchemes";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Loader2 } from "lucide-react";
 
 const Schemes = () => {
   const [searchParams] = useSearchParams();
+  const { schemes: allSchemes, loading: schemesLoading } = useSchemes();
   const [searchQuery, setSearchQuery] = useState("");
   const categoryFromUrl = searchParams.get("category");
   const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || "All Categories");
@@ -21,7 +23,7 @@ const Schemes = () => {
   }, [categoryFromUrl]);
 
   const filteredSchemes = useMemo(() => {
-    return governmentSchemes.filter((scheme) => {
+    return allSchemes.filter((scheme) => {
       const matchesSearch = 
         scheme.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         scheme.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -32,7 +34,7 @@ const Schemes = () => {
       
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [allSchemes, searchQuery, selectedCategory]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -86,24 +88,33 @@ const Schemes = () => {
         {/* Results */}
         <section className="py-8">
           <div className="container px-4">
-            <p className="text-sm text-muted-foreground mb-6">
-              Showing {filteredSchemes.length} of {governmentSchemes.length} schemes
-            </p>
-            
-            {filteredSchemes.length > 0 ? (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredSchemes.map((scheme) => (
-                  <SchemeCard key={scheme.id} scheme={scheme} />
-                ))}
+            {schemesLoading ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+                <p className="text-muted-foreground">Loading schemes data...</p>
               </div>
             ) : (
-              <div className="text-center py-16">
-                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="font-display text-lg font-semibold text-foreground">No schemes found</h3>
-                <p className="text-muted-foreground mt-2">
-                  Try adjusting your search or filter criteria
+              <>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Showing {filteredSchemes.length} of {allSchemes.length} schemes
                 </p>
-              </div>
+                
+                {filteredSchemes.length > 0 ? (
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {filteredSchemes.map((scheme) => (
+                      <SchemeCard key={scheme.id} scheme={scheme} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-16">
+                    <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="font-display text-lg font-semibold text-foreground">No schemes found</h3>
+                    <p className="text-muted-foreground mt-2">
+                      Try adjusting your search or filter criteria
+                    </p>
+                  </div>
+                )}
+            </>
             )}
           </div>
         </section>

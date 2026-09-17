@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import Chatbot from "./components/Chatbot";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <Chatbot />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
