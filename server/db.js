@@ -3,8 +3,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
 let cached = global.mongoose;
 
 if (!cached) {
@@ -16,9 +14,16 @@ export const connectDB = async () => {
     return cached.conn;
   }
 
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
+
+  if (!uri) {
+    console.error('MongoDB connection error: Please define the MONGODB_URI environment variable in your deployment platform.');
+    return null;
+  }
+
   if (!cached.promise) {
     console.log("Attempting to connect to MongoDB...");
-    cached.promise = mongoose.connect(MONGODB_URI, {
+    cached.promise = mongoose.connect(uri, {
       serverSelectionTimeoutMS: 5000,
       bufferCommands: false,
     }).then((mongoose) => {
