@@ -1,6 +1,6 @@
 # SchemeSetu: Bridging Citizens to Benefits
 
-> **Team QuantumBits**
+> **Team Bug Squashers**
 
 ![Project Status](https://img.shields.io/badge/Status-Prototype-orange)
 

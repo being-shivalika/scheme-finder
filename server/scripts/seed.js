@@ -3,8 +3,6 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -29,8 +27,9 @@ const ProfileSchema = new mongoose.Schema({
 
 async function seed() {
   try {
-    if (!MONGODB_URI) {
-      throw new Error('MONGODB_URI is required');
+    const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
+    if (!uri) {
+      throw new Error('MONGODB_URI is required in your environment variables');
     }
 
     const email = process.env.SEED_ADMIN_EMAIL;
@@ -45,7 +44,7 @@ async function seed() {
       throw new Error('SEED_ADMIN_PASSWORD must be at least 8 characters');
     }
 
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(uri);
     console.log('Connected to MongoDB!');
 
     const User = mongoose.model('User', userSchema);
