@@ -70,8 +70,19 @@ app.use('/api/user-schemes', schemeRoutes);
 app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const isServerless = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+
+if (!isServerless) {
+  const server = app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+  server.on('error', (err) => {
+    console.error('Failed to start API server:', err.message);
+    process.exit(1);
+  });
+  // Keep the process alive for concurrently / local npm run dev
+  process.on('SIGTERM', () => server.close());
+  process.on('SIGINT', () => server.close());
 }
 
 export default app;

@@ -45,10 +45,16 @@ export function validateBody(schema) {
   return (req, res, next) => {
     const parsed = schema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({
-        error: 'Invalid request',
-        details: parsed.error.issues.map((i) => ({ path: i.path.join('.'), message: i.message })),
-      });
+      const details = parsed.error.issues.map((i) => ({
+        path: i.path.join('.'),
+        message: i.message,
+      }));
+      const passwordIssue = details.find((d) => d.path === 'password');
+      const error =
+        passwordIssue && String(passwordIssue.message).toLowerCase().includes('at least')
+          ? 'Password must be at least 8 characters'
+          : details[0]?.message || 'Invalid request';
+      return res.status(400).json({ error, details });
     }
     req.body = parsed.data;
     next();

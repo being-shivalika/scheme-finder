@@ -8,8 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, readApiJson } from "@/lib/api";
 import { Loader2 } from "lucide-react";
+
+type AuthResponse = {
+  error?: string;
+  message?: string;
+  details?: { path: string; message: string }[];
+  user?: { id: string; email: string; role: string };
+};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,22 +35,44 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
+      if (isSignUp && password.length < 8) {
+        throw new Error("Password must be at least 8 characters.");
+      }
+
       const endpoint = isSignUp ? "/api/auth/signup" : "/api/auth/login";
       const response = await apiFetch(endpoint, {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.trim(), password }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Authentication failed");
+      const data = await readApiJson<AuthResponse>(response);
+
+      if (!response.ok) {
+        if (data.error === "User already exists") {
+          setIsSignUp(false);
+          throw new Error(
+            data.message || "An account with this email already exists. Sign in instead."
+          );
+        }
+        const detail = data.details?.[0]?.message;
+        throw new Error(detail || data.error || "Authentication failed");
+      }
+      if (!data.user) throw new Error("Authentication failed");
+
       setSession({ user: data.user });
       toast({
         title: isSignUp ? "Account Created!" : "Welcome back!",
         description: "Successfully logged in.",
       });
     } catch (err: unknown) {
+      const message =
+        err instanceof TypeError && /fetch|network/i.test(err.message)
+          ? "Cannot reach the server. Start the app with npm run dev."
+          : err instanceof Error
+            ? err.message
+            : "Authentication failed";
       toast({
         title: "Error",
-        description: err instanceof Error ? err.message : "Authentication failed",
+        description: message,
         variant: "destructive",
       });
     } finally {
@@ -76,6 +105,7 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
@@ -89,12 +119,16 @@ const Login = () => {
                 <Input
                   id="password"
                   type="password"
+                  autoComplete={isSignUp ? "new-password" : "current-password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
                   minLength={isSignUp ? 8 : 1}
                 />
+                {isSignUp && (
+                  <p className="text-[12px] text-ash">At least 8 characters</p>
+                )}
               </div>
               <Button type="submit" variant="default" className="mt-6 w-full" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
